@@ -8,7 +8,7 @@
 - MySql 8.0.21
 - Git
 
- ##Possiveis IDEs:
+ ### Possiveis IDEs:
 - Intellij IDE
 - Eclipse
 - NetBeans
