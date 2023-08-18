@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:latest  # Versão mais recente do PostgreSQL
+    container_name: meu-container  # Nome do contêiner
+    environment:
+      POSTGRES_DB: locadoraDB  # Nome do banco de dados a ser criado
+      POSTGRES_USER: locadora  # Nome de usuário do PostgreSQL
+      POSTGRES_PASSWORD: locadora  # Senha do usuário do PostgreSQL
+    ports:
+      - "5432:5432"  # Mapeamento da porta do host para a porta do contêiner
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Volume para persistência dos dados
+
+volumes:
+  postgres_data:
