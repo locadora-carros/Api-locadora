@@ -25,7 +25,7 @@ public class Carro {
 
     private String cor;
 
-    private String quantPortas;
+    private int quantPortas;
 
     private String tipoCombustivel;
 
