@@ -1,4 +1,4 @@
-package ufpb.br.apilocadora.dto;
+package ufpb.br.apilocadora.dto.carro;
 
 import org.springframework.stereotype.Component;
 import ufpb.br.apilocadora.domain.Carro;

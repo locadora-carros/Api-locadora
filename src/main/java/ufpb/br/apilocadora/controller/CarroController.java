@@ -5,12 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ufpb.br.apilocadora.domain.Carro;
-import ufpb.br.apilocadora.dto.CarroDTO;
-import ufpb.br.apilocadora.dto.CarroInfoSimplesDTO;
+import ufpb.br.apilocadora.dto.carro.CarroDTO;
+import ufpb.br.apilocadora.dto.carro.CarroInfoSimplesDTO;
 import ufpb.br.apilocadora.service.CarroService;
-
-import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

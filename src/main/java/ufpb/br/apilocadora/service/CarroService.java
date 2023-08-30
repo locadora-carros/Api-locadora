@@ -8,14 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ufpb.br.apilocadora.domain.Carro;
-import ufpb.br.apilocadora.dto.CarroDTO;
-import ufpb.br.apilocadora.dto.CarroInfoSimplesDTO;
-import ufpb.br.apilocadora.dto.CarroMapper;
+import ufpb.br.apilocadora.dto.carro.CarroDTO;
+import ufpb.br.apilocadora.dto.carro.CarroInfoSimplesDTO;
+import ufpb.br.apilocadora.dto.carro.CarroMapper;
 import ufpb.br.apilocadora.repository.CarroRepository;
 import ufpb.br.apilocadora.service.exception.ObjectNotFoundException;
 import ufpb.br.apilocadora.service.exception.ObjectAlreadyExistException;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
