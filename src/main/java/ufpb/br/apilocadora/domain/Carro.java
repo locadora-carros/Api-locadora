@@ -38,6 +38,7 @@ public class Carro {
         this.cor = carroDTO.getCor();
         this.quantPortas = carroDTO.getQuantPortas();
         this.tipoCombustivel = carroDTO.getTipoCombustivel();
+        this.estaALugado = false;
     }
 
 }

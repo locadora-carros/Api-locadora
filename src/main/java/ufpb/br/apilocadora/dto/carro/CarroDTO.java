@@ -19,4 +19,6 @@ public class CarroDTO {
 
     private String tipoCombustivel;
 
+    private Boolean estaALugado;
+
 }
