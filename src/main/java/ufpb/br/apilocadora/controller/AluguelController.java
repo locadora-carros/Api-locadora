@@ -10,8 +10,7 @@ import ufpb.br.apilocadora.service.AluguelService;
 @RestController
 @RequestMapping("/api/alugueis")
 public class AluguelController {
-
-    //TESTE DE BRANCH 
+    
     @Autowired
     private AluguelService aluguelService;
 
