@@ -18,12 +18,36 @@ public class AluguelController {
     @Autowired
     private AluguelService aluguelService;
 
+    //Create
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void saveAluguel(@RequestBody AluguelDTO aluguelDTO) {
         aluguelService.save(aluguelDTO);
     }
 
+    //Read
+    @GetMapping("/{id}")
+    public ResponseEntity<AluguelDTO> getAluguel(@PathVariable Long id){
+        AluguelDTO aluguelDTO = aluguelService.findById(id);
+        if(aluguelDTO != null){
+            return ResponseEntity.ok(aluguelDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //Update
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateAluguel(@PathVariable Long id, @RequestBody AluguelDTO aluguelDTO){
+        boolean updated = aluguelService.update(id, aluguelDTO);
+        if(updated){
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //Delete
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
@@ -34,5 +58,10 @@ public class AluguelController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+
+
+
+
 
 }

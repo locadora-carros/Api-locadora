@@ -56,15 +56,18 @@ public class AluguelService {
     }
 
     @Transactional
-    public void update(Long id, AluguelDTO newAluguelDTO) throws ObjectNotFoundException {
+    public boolean update(Long id, AluguelDTO newAluguelDTO) {
         Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
-        Aluguel aluguel = aluguelOptional.orElseThrow(() ->
-                new ObjectNotFoundException(
-                        "Aluguél não encontrado! id: " + id + ", Tipo: " + Carro.class.getName()));
-
-        BeanUtils.copyProperties(newAluguelDTO, aluguel, "id");
-        aluguelRepository.save(aluguel);
+        if (aluguelOptional.isPresent()) {
+            Aluguel aluguel = aluguelOptional.get();
+            BeanUtils.copyProperties(newAluguelDTO, aluguel, "id");
+            aluguelRepository.save(aluguel);
+            return true; // Indicar que a atualização foi bem-sucedida
+        } else {
+            return false; // Indicar que o aluguel não foi encontrado
+        }
     }
+
 
     @Transactional
     public void delete(Long id) throws ObjectNotFoundException {
