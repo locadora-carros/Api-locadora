@@ -40,12 +40,12 @@ public class AluguelService {
                 .orElseThrow(() -> new ObjectNotFoundException(
                         "Carro não encontrado! Chassi: " + aluguelDTO.getChassi() + ", Tipo: " + Carro.class.getName()));
 
-        if (!carro.getEstaALugado()){
+        if (!carro.getEstaAlugado()){
             throw new ObjectAlreadyExistException(
                     "Carro já está alugado" + carro.getNome() + ", Tipo: " + Carro.class.getName());
         }
 
-        carro.setEstaALugado(true);
+        carro.setEstaAlugado(true);
         carroService.update(carro.getChassi(), carroMapper.toDto(carro));
 
         Aluguel aluguel = aluguelMapper.toEntity(aluguelDTO, carro);

@@ -29,7 +29,7 @@ public class Carro {
 
     private String tipoCombustivel;
 
-    private Boolean estaALugado;
+    private Boolean estaAlugado;
 
 
     public Carro (CarroDTO carroDTO){
@@ -38,7 +38,7 @@ public class Carro {
         this.cor = carroDTO.getCor();
         this.quantPortas = carroDTO.getQuantPortas();
         this.tipoCombustivel = carroDTO.getTipoCombustivel();
-        this.estaALugado = false;
+        this.estaAlugado = false;
     }
 
 }

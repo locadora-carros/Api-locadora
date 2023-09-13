@@ -72,10 +72,8 @@ public class CarroService {
     @Transactional
     public void update(String chassi, CarroDTO newCarroDTO) throws ObjectNotFoundException {
         Optional<Carro> carroOptional = carroRepository.findByChassi(chassi);
-        Carro carro = carroOptional.orElseThrow(() ->
-                new ObjectNotFoundException(
+        Carro carro = carroOptional.orElseThrow(() -> new ObjectNotFoundException(
                         "Carro não encontrado! Chassi: " + chassi + ", Tipo: " + Carro.class.getName()));
-
 
         BeanUtils.copyProperties(newCarroDTO, carro, "chassi");
         carroRepository.save(carro);
