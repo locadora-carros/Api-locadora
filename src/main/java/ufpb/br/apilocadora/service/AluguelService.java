@@ -15,6 +15,8 @@ import ufpb.br.apilocadora.repository.CarroRepository;
 import ufpb.br.apilocadora.service.exception.ObjectAlreadyExistException;
 import ufpb.br.apilocadora.service.exception.ObjectNotFoundException;
 
+import java.util.Optional;
+
 @Service
 public class AluguelService {
 
@@ -25,31 +27,28 @@ public class AluguelService {
     private AluguelMapper aluguelMapper;
 
     @Autowired
-    private CarroMapper carroMapper;
-
-    @Autowired
     private CarroRepository carroRepository;
-
-    @Autowired
-    private CarroService carroService;
 
 
     @Transactional
     public void save(AluguelDTO aluguelDTO) {
-        Carro carro = carroRepository.findByChassi(aluguelDTO.getChassi())
-                .orElseThrow(() -> new ObjectNotFoundException(
-                        "Carro não encontrado! Chassi: " + aluguelDTO.getChassi() + ", Tipo: " + Carro.class.getName()));
+        Optional<Carro> optionalCarro = carroRepository.findByChassi(aluguelDTO.getChassi());
 
-        if (!carro.getEstaALugado()){
-            throw new ObjectAlreadyExistException(
-                    "Carro já está alugado" + carro.getNome() + ", Tipo: " + Carro.class.getName());
+        if (optionalCarro.isPresent()) {
+            Carro carro = optionalCarro.get();
+
+            if (carro.getEstaALugado()) {
+                throw new ObjectAlreadyExistException(
+                        "Carro já está alugado" + carro.getNome() + ", Tipo: " + Carro.class.getName());
+            }
+            carro.setEstaALugado(true);
+            carroRepository.save(carro);
+
+            Aluguel aluguel = aluguelMapper.toEntity(aluguelDTO, carro);
+            aluguelRepository.save(aluguel);
+        } else {
+            throw new ObjectNotFoundException(
+                    "Carro não encontrado! Chassi: " + aluguelDTO.getChassi() + ", Tipo: " + Carro.class.getName());
         }
-
-        carro.setEstaALugado(true);
-        carroService.update(carro.getChassi(), carroMapper.toDto(carro));
-
-        Aluguel aluguel = aluguelMapper.toEntity(aluguelDTO, carro);
-
-        aluguelRepository.save(aluguel);
     }
 }
