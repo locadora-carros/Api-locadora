@@ -10,7 +10,7 @@ import ufpb.br.apilocadora.service.AluguelService;
 @RestController
 @RequestMapping("/api/alugueis")
 public class AluguelController {
-
+    
     @Autowired
     private AluguelService aluguelService;
 
