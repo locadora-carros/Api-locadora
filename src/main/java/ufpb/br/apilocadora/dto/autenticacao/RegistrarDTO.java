@@ -3,18 +3,18 @@ package ufpb.br.apilocadora.dto.autenticacao;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ufpb.br.apilocadora.domain.UserRole;
+import ufpb.br.apilocadora.domain.enums.UsuarioRole;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class RegistrarDTO {
 
-    private String login;
+    private String email;
 
     private String password;
 
-    private String email;
+    private String nome;
 
-    private UserRole role;
+    private UsuarioRole role;
 }

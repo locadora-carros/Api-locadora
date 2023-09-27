@@ -3,6 +3,7 @@ package ufpb.br.apilocadora.dto.aluguel;
 import org.springframework.stereotype.Component;
 import ufpb.br.apilocadora.domain.Aluguel;
 import ufpb.br.apilocadora.domain.Carro;
+import ufpb.br.apilocadora.domain.Usuario;
 
 @Component
 public class AluguelMapper {
@@ -17,13 +18,14 @@ public class AluguelMapper {
         return aluguelDTO;
     }
     
-    public Aluguel toEntity(AluguelDTO aluguelDTO, Carro carro) {
+    public Aluguel toEntity(AluguelDTO aluguelDTO, Carro carro, Usuario usuario) {
         Aluguel aluguel = new Aluguel();
         aluguel.setIniciaAluguel(aluguelDTO.getIniciaAluguel());
         aluguel.setFimAluguel(aluguelDTO.getFimAluguel());
         aluguel.setFormaPagamento(aluguelDTO.getFormaPagamento());
         aluguel.setValor(aluguelDTO.getValor());
         aluguel.setCarro(carro);
+        aluguel.setUsuario(usuario);
         return aluguel;
     }
 }

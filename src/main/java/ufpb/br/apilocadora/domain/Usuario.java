@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ufpb.br.apilocadora.domain.enums.UsuarioRole;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,32 +26,35 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private String login;
-
-    private String password;
-
     @Email
     @Column(unique = true)
     private String email;
 
-    private UserRole role;
+    private String password;
 
-    public Usuario(String login, String password, String email,UserRole role){
-        this.login = login;
-        this.password = password;
+    private String nome;
+
+    private UsuarioRole role;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Aluguel> alugueis;
+
+    public Usuario(String email, String password, String nome, UsuarioRole role){
         this.email = email;
+        this.password = password;
+        this.nome = nome;
         this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == UsuarioRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
     public String getUsername() {
-        return login;
+        return nome;
     }
 
     @Override

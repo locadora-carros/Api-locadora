@@ -1,12 +1,12 @@
-package ufpb.br.apilocadora.domain;
+package ufpb.br.apilocadora.domain.enums;
 
-public enum UserRole {
+public enum UsuarioRole {
     ADMIN("admin"),
     USER("user");
 
     private String role;
 
-    UserRole(String role){
+    UsuarioRole(String role){
         this.role = role;
     }
 
