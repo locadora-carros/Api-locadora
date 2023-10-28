@@ -22,6 +22,7 @@ public class AluguelController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void saveAluguel(@RequestBody AluguelDTO aluguelDTO) {
+
         aluguelService.save(aluguelDTO);
     }
 

@@ -28,4 +28,8 @@ public class Aluguel {
 
     @ManyToOne
     private Carro carro;
+
+    @JoinColumn(name = "usuario_id")
+    @ManyToOne
+    private Usuario usuario;
 }

@@ -13,7 +13,6 @@ public class CarroMapper {
         carroDTO.setCor(carro.getCor());
         carroDTO.setQuantPortas(carro.getQuantPortas());
         carroDTO.setTipoCombustivel(carro.getTipoCombustivel());
-        carroDTO.setEstaALugado(carro.getEstaALugado());
         return carroDTO;
     }
 
