@@ -64,4 +64,37 @@ public class AluguelService {
                     "Carro não encontrado! Chassi: " + aluguelDTO.getChassi() + ", Tipo: " + Carro.class.getName());
         }
     }
+
+    @Transactional
+    public boolean update(Long id, AluguelDTO newAluguelDTO) {
+        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
+        if (aluguelOptional.isPresent()) {
+            Aluguel aluguel = aluguelOptional.get();
+            BeanUtils.copyProperties(newAluguelDTO, aluguel, "id");
+            aluguelRepository.save(aluguel);
+            return true; // Indicar que a atualização foi bem-sucedida
+        } else {
+            return false; // Indicar que o aluguel não foi encontrado
+        }
+    }
+
+
+    @Transactional
+    public void delete(Long id) throws ObjectNotFoundException {
+        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
+        Aluguel aluguel = aluguelOptional.orElseThrow(() ->
+                new ObjectNotFoundException(
+                        "Aluguél não encontrado! id: " + id + ", Tipo: " + Aluguel.class.getName()));
+        aluguelRepository.delete(aluguel);
+    }
+
+    public AluguelDTO findById(Long id) {
+        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
+        Aluguel aluguel = aluguelOptional.orElseThrow(() ->
+                new ObjectNotFoundException(
+                        "Aluguél não encontrado! id: " + id + ", Tipo: " + Aluguel.class.getName()));
+
+        return aluguelMapper.toDto(aluguel);
+    }
+
 }

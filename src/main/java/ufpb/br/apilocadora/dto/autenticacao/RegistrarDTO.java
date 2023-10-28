@@ -14,7 +14,11 @@ public class RegistrarDTO {
 
     private String password;
 
+    private String confirmPassword;
+
     private String nome;
+
+    private String sobreNome;
 
     private UsuarioRole role;
 }
