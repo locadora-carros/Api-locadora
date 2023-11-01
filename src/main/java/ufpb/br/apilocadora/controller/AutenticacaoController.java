@@ -15,6 +15,8 @@ import ufpb.br.apilocadora.dto.autenticacao.LoginResponseDTO;
 import ufpb.br.apilocadora.repository.UsuarioRepository;
 import ufpb.br.apilocadora.security.TokenService;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -48,5 +50,11 @@ public class AutenticacaoController {
         this.repository.save(newUsuario);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        List<Usuario> usuarios = repository.findAll();
+        return ResponseEntity.ok(usuarios);
     }
 }
