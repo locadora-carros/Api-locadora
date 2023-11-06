@@ -2,11 +2,9 @@ package ufpb.br.apilocadora.service;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ufpb.br.apilocadora.domain.Aluguel;
@@ -14,9 +12,12 @@ import ufpb.br.apilocadora.domain.Carro;
 import ufpb.br.apilocadora.domain.Usuario;
 import ufpb.br.apilocadora.dto.aluguel.AluguelDTO;
 import ufpb.br.apilocadora.dto.aluguel.AluguelMapper;
+import ufpb.br.apilocadora.dto.carro.CarroDTO;
+import ufpb.br.apilocadora.dto.carro.CarroMapper;
 import ufpb.br.apilocadora.repository.AluguelRepository;
 import ufpb.br.apilocadora.repository.CarroRepository;
 import ufpb.br.apilocadora.repository.UsuarioRepository;
+import ufpb.br.apilocadora.security.TokenService;
 import ufpb.br.apilocadora.service.exception.ObjectAlreadyExistException;
 import ufpb.br.apilocadora.service.exception.ObjectNotFoundException;
 
@@ -38,28 +39,9 @@ public class AluguelService {
     UsuarioRepository usuarioRepository;
 
 
-    public AluguelDTO findById(String id) {
-        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(Long.valueOf(id));
-
-        Aluguel aluguel = aluguelOptional.orElseThrow(() ->
-                new ObjectNotFoundException(
-                        "Aluguel não encontrado! id: " + id + ", Tipo: " + Carro.class.getName()));
-
-        return aluguelMapper.toDto(aluguel);
-
-    }
-
-    public Page<AluguelDTO> listAll(Integer page, Integer pageSize) {
-
-        Pageable pageable = PageRequest.of(page, pageSize);
-        Page<Aluguel> alugueisPage = aluguelRepository.findAll(pageable);
-
-        return alugueisPage.map(aluguelMapper::toDto);
-    }
-
-
     @Transactional
     public void save(AluguelDTO aluguelDTO) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) authentication.getPrincipal();
 
@@ -84,24 +66,35 @@ public class AluguelService {
     }
 
     @Transactional
-    public void update(String id, AluguelDTO newAluguelDTO) throws ObjectNotFoundException {
-        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(Long.valueOf(id));
-        Aluguel aluguel = aluguelOptional.orElseThrow(() ->
-                new ObjectNotFoundException(
-                        "Aluguel não encontrado! id: " + id + ", Tipo: " + Carro.class.getName()));
-
-        BeanUtils.copyProperties(newAluguelDTO, aluguel, "id");
-        aluguelRepository.save(aluguel);
+    public boolean update(Long id, AluguelDTO newAluguelDTO) {
+        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
+        if (aluguelOptional.isPresent()) {
+            Aluguel aluguel = aluguelOptional.get();
+            BeanUtils.copyProperties(newAluguelDTO, aluguel, "id");
+            aluguelRepository.save(aluguel);
+            return true; // Indicar que a atualização foi bem-sucedida
+        } else {
+            return false; // Indicar que o aluguel não foi encontrado
+        }
     }
+
 
     @Transactional
-    public void delete(String id) throws ObjectNotFoundException {
-        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(Long.valueOf(id));
+    public void delete(Long id) throws ObjectNotFoundException {
+        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
         Aluguel aluguel = aluguelOptional.orElseThrow(() ->
                 new ObjectNotFoundException(
-                        "Aluguel não encontrado! id: " + id + ", Tipo: " + Carro.class.getName()));
-
+                        "Aluguél não encontrado! id: " + id + ", Tipo: " + Aluguel.class.getName()));
         aluguelRepository.delete(aluguel);
-
     }
+
+    public AluguelDTO findById(Long id) {
+        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
+        Aluguel aluguel = aluguelOptional.orElseThrow(() ->
+                new ObjectNotFoundException(
+                        "Aluguél não encontrado! id: " + id + ", Tipo: " + Aluguel.class.getName()));
+
+        return aluguelMapper.toDto(aluguel);
+    }
+
 }

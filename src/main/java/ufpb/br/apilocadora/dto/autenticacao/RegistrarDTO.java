@@ -11,7 +11,7 @@ import ufpb.br.apilocadora.domain.enums.UsuarioRole;
 public class RegistrarDTO {
 
     private String email;
-
+ 
     private String password;
 
     private String confirmPassword;
