@@ -34,9 +34,9 @@ public class AutenticacaoController {
         authorizationService.save(RegistrarDTO);
     }
 
-    @GetMapping("/usuarios")
-    public ResponseEntity<List<Usuario>> listarUsuarios() {
-        List<Usuario> usuarios = repository.findAll();
-        return ResponseEntity.ok(usuarios);
-    }
+//    @GetMapping("/usuarios")
+//    public ResponseEntity<List<Usuario>> listarUsuarios() {
+//        List<Usuario> usuarios = repository.findAll();
+//        return ResponseEntity.ok(usuarios);
+//    }
 }
