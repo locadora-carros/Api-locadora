@@ -34,18 +34,15 @@ public class Usuario implements UserDetails {
 
     private String nome;
 
-    private String sobreNome;
-
     private UsuarioRole role;
 
     @OneToMany(mappedBy = "usuario")
     private List<Aluguel> alugueis;
 
-    public Usuario(String email, String password, String nome, String sobreNome, UsuarioRole role){
+    public Usuario(String email, String password, String nome, UsuarioRole role){
         this.email = email;
         this.password = password;
         this.nome = nome;
-        this.sobreNome = sobreNome;
         this.role = role;
     }
 
