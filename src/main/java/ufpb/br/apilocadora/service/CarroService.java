@@ -67,8 +67,6 @@ public class CarroService {
 
         Carro carro = new Carro(carroDTO);
         carroRepository.save(carro);
-
-
     }
 
     @Transactional
@@ -77,7 +75,6 @@ public class CarroService {
         Carro carro = carroOptional.orElseThrow(() ->
                 new ObjectNotFoundException(
                         "Carro não encontrado! Chassi: " + chassi + ", Tipo: " + Carro.class.getName()));
-
 
         BeanUtils.copyProperties(newCarroDTO, carro, "chassi");
         carroRepository.save(carro);
