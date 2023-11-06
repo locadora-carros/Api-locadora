@@ -61,9 +61,9 @@ public class AuthorizationService implements UserDetailsService {
             throw new ObjectAlreadyExistException("Usuario já registrado");
         }
 
-        if(!registrarDTO.getPassword().equals(registrarDTO.getConfirmPassword())){
-            throw new DifferentPassawordException("As senhas precisam ser iguais!");
-        }
+//        if(!registrarDTO.getPassword().equals(registrarDTO.getConfirmPassword())){
+//            throw new DifferentPassawordException("As senhas precisam ser iguais!");
+//        }
 
         String senhaEncriptada = new BCryptPasswordEncoder().encode(registrarDTO.getPassword());
         Usuario newUsuario = new Usuario(
