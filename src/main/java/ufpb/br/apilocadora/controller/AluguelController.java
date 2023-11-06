@@ -1,13 +1,11 @@
 package ufpb.br.apilocadora.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import ufpb.br.apilocadora.domain.Aluguel;
 import ufpb.br.apilocadora.dto.aluguel.AluguelDTO;
-import ufpb.br.apilocadora.dto.carro.CarroDTO;
 import ufpb.br.apilocadora.service.AluguelService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -18,7 +16,20 @@ public class AluguelController {
     @Autowired
     private AluguelService aluguelService;
 
-    //Create
+    @GetMapping("/{id}")
+    public ResponseEntity<AluguelDTO> findAluguelById (@PathVariable String id) {
+
+        return ResponseEntity.ok().body(aluguelService.findById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<AluguelDTO>> findAllAlugueis(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "pageSize", defaultValue = "24") Integer pageSize) {
+
+        return ResponseEntity.ok(aluguelService.listAll(page, pageSize));
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void saveAluguel(@RequestBody AluguelDTO aluguelDTO) {
@@ -26,43 +37,18 @@ public class AluguelController {
         aluguelService.save(aluguelDTO);
     }
 
-    //Read
-    @GetMapping("/{id}")
-    public ResponseEntity<AluguelDTO> getAluguel(@PathVariable Long id){
-        AluguelDTO aluguelDTO = aluguelService.findById(id);
-        if(aluguelDTO != null){
-            return ResponseEntity.ok(aluguelDTO);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void updateAluguel(@RequestParam(value = "value") String id,
+                              @RequestBody AluguelDTO aluguelDTO){
+
+        aluguelService.update(id, aluguelDTO);
     }
 
-    //Update
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateAluguel(@PathVariable Long id, @RequestBody AluguelDTO aluguelDTO){
-        boolean updated = aluguelService.update(id, aluguelDTO);
-        if(updated){
-            return ResponseEntity.ok().build();
-        }else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    //Delete
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-        try {
-            aluguelService.delete(id);
-            return ResponseEntity.ok().build();
-        } catch (org.springframework.dao.DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public void deleteAluguel(@RequestParam(value = "value") String id ){
+        aluguelService.delete(id);
     }
-
-
-
-
-
 
 }
