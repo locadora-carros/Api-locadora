@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class AluguelDTO {
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime inicioAluguel;
+    private LocalDateTime iniciaAluguel;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime fimAluguel;

@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ufpb.br.apilocadora.service.exception.DifferentPassawordException;
 import ufpb.br.apilocadora.service.exception.ObjectNotFoundException;
 import ufpb.br.apilocadora.service.exception.ObjectAlreadyExistException;
 
@@ -26,16 +25,6 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(ObjectAlreadyExistException.class)
     public ResponseEntity<StandardError> objectAlreadyExistException(ObjectAlreadyExistException e) {
-        return new ResponseEntity<>(
-                StandardError.builder()
-                        .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.BAD_REQUEST.value())
-                        .error(e.getMessage())
-                        .build(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(DifferentPassawordException.class)
-    public ResponseEntity<StandardError> differentPassawordException(DifferentPassawordException e) {
         return new ResponseEntity<>(
                 StandardError.builder()
                         .timestamp(LocalDateTime.now())
