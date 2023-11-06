@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ufpb.br.apilocadora.dto.aluguel.AluguelDTO;
-import ufpb.br.apilocadora.dto.carro.CarroDTO;
-import ufpb.br.apilocadora.dto.carro.CarroInfoSimplesDTO;
 import ufpb.br.apilocadora.service.AluguelService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)

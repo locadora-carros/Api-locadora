@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ufpb.br.apilocadora.domain.Aluguel;
@@ -15,13 +14,9 @@ import ufpb.br.apilocadora.domain.Carro;
 import ufpb.br.apilocadora.domain.Usuario;
 import ufpb.br.apilocadora.dto.aluguel.AluguelDTO;
 import ufpb.br.apilocadora.dto.aluguel.AluguelMapper;
-import ufpb.br.apilocadora.dto.carro.CarroDTO;
-import ufpb.br.apilocadora.dto.carro.CarroInfoSimplesDTO;
-import ufpb.br.apilocadora.dto.carro.CarroMapper;
 import ufpb.br.apilocadora.repository.AluguelRepository;
 import ufpb.br.apilocadora.repository.CarroRepository;
 import ufpb.br.apilocadora.repository.UsuarioRepository;
-import ufpb.br.apilocadora.security.TokenService;
 import ufpb.br.apilocadora.service.exception.ObjectAlreadyExistException;
 import ufpb.br.apilocadora.service.exception.ObjectNotFoundException;
 
@@ -75,7 +70,7 @@ public class AluguelService {
 
             if (carro.getEstaALugado()) {
                 throw new ObjectAlreadyExistException(
-                        "Carro " + carro.getNome() + " já está alugado, Tipo: " + Carro.class.getName());
+                        "Carro "+ carro.getNome() +" já está alugado, Tipo: " + Carro.class.getName());
             }
             carro.setEstaALugado(true);
             carroRepository.save(carro);

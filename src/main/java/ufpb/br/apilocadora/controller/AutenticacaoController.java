@@ -8,6 +8,7 @@ import ufpb.br.apilocadora.dto.autenticacao.AuthenticationDTO;
 import ufpb.br.apilocadora.dto.autenticacao.LoginResponseDTO;
 import ufpb.br.apilocadora.dto.autenticacao.RegistrarDTO;
 import ufpb.br.apilocadora.service.AuthorizationService;
+import ufpb.br.apilocadora.service.exception.DifferentPassawordException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -26,7 +27,7 @@ public class AutenticacaoController {
 
     @PostMapping("/registrar")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registrar(@RequestBody @Valid RegistrarDTO RegistrarDTO){
+    public void registrar(@RequestBody @Valid RegistrarDTO RegistrarDTO) {
 
         authorizationService.save(RegistrarDTO);
     }

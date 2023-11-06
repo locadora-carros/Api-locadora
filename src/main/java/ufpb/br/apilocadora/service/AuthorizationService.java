@@ -19,6 +19,7 @@ import ufpb.br.apilocadora.dto.autenticacao.LoginResponseDTO;
 import ufpb.br.apilocadora.dto.autenticacao.RegistrarDTO;
 import ufpb.br.apilocadora.repository.UsuarioRepository;
 import ufpb.br.apilocadora.security.TokenService;
+import ufpb.br.apilocadora.service.exception.DifferentPassawordException;
 import ufpb.br.apilocadora.service.exception.ObjectAlreadyExistException;
 import ufpb.br.apilocadora.service.exception.ObjectNotFoundException;
 
@@ -60,9 +61,14 @@ public class AuthorizationService implements UserDetailsService {
             throw new ObjectAlreadyExistException("Usuario já registrado");
         }
 
+        if(!registrarDTO.getPassword().equals(registrarDTO.getConfirmPassword())){
+            throw new DifferentPassawordException("As senhas precisam ser iguais!");
+        }
+
         String senhaEncriptada = new BCryptPasswordEncoder().encode(registrarDTO.getPassword());
         Usuario newUsuario = new Usuario(
-                registrarDTO.getEmail(), senhaEncriptada, registrarDTO.getNome(), registrarDTO.getRole());
+                registrarDTO.getEmail(), senhaEncriptada, registrarDTO.getNome(),
+                registrarDTO.getSobreNome(), registrarDTO.getRole());
 
         usuarioRepository.save(newUsuario);
 

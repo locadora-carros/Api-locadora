@@ -42,7 +42,8 @@ public class AutenticacaoControllerTest extends ContainersEnvironment {
 
         UsuarioRole role = UsuarioRole.ADMIN;
 
-        Usuario usuario = new Usuario("teste@teste.com", senhaEncriptada, "wellington", role);
+        Usuario usuario = new Usuario("teste@teste.com", senhaEncriptada, "teste",
+                "testando", role);
 
         usuarioRepository.save(usuario);
 
@@ -59,7 +60,8 @@ public class AutenticacaoControllerTest extends ContainersEnvironment {
     void login_retornaStatusNotFound_quandoNaoEncontraUsuario(){
         UsuarioRole role = UsuarioRole.ADMIN;
 
-        Usuario usuario = new Usuario("teste@teste.com", "12345678", "wellington", role);
+        Usuario usuario = new Usuario("teste@teste.com", "12345678", "teste",
+                "testando", role);
 
         AuthenticationDTO authenticationDTO = new AuthenticationDTO(usuario.getEmail(), usuario.getPassword());
 
@@ -72,15 +74,35 @@ public class AutenticacaoControllerTest extends ContainersEnvironment {
 
     @Test
     void registrar_retornaStatusOk_quandoLogadoComSucesso(){
+        String senhaSemCriptografia = "12345678";
         UsuarioRole role = UsuarioRole.ADMIN;
 
-        RegistrarDTO usuario = new RegistrarDTO("teste@teste.com", "12345678", "wellington", role);
+        RegistrarDTO registrarDTO = new RegistrarDTO(
+                "teste@teste.com", senhaSemCriptografia, senhaSemCriptografia, "teste",
+                "testando", role);
 
         ResponseEntity<Void> response = testRestTemplate.postForEntity(
-                BASE_URL+"/registrar", usuario, Void.class);
+                BASE_URL+"/registrar", registrarDTO, Void.class);
 
         Assertions.assertThat(response.getStatusCode())
                 .isEqualTo(HttpStatus.CREATED);
+    }
+
+    @Test
+    void registrar_retornaStatusBadRequest_quandoAsSenhasNaoSaoIguais(){
+        String senha = "12345678";
+        String senhaDiferente = "123";
+        UsuarioRole role = UsuarioRole.ADMIN;
+
+        RegistrarDTO registrarDTO = new RegistrarDTO(
+                "teste@teste.com", senha, senhaDiferente, "teste",
+                "testando", role);
+
+        ResponseEntity<Void> response = testRestTemplate.postForEntity(
+                BASE_URL+"/registrar", registrarDTO, Void.class);
+
+        Assertions.assertThat(response.getStatusCode())
+                .isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
@@ -89,15 +111,17 @@ public class AutenticacaoControllerTest extends ContainersEnvironment {
         String senhaEncriptada = new BCryptPasswordEncoder().encode(senhaSemCriptografia);
         UsuarioRole role = UsuarioRole.ADMIN;
 
-        Usuario usuario = new Usuario("teste@teste.com", senhaEncriptada, "wellington", role);
+        Usuario usuario = new Usuario("teste@teste.com", senhaEncriptada, "teste",
+                "testando",role);
 
         usuarioRepository.save(usuario);
 
         RegistrarDTO RegistrarDTO = new RegistrarDTO(
-                usuario.getEmail(), senhaSemCriptografia, usuario.getNome(), usuario.getRole());
+                usuario.getEmail(), senhaSemCriptografia, senhaSemCriptografia, usuario.getNome(),
+                usuario.getSobreNome(), usuario.getRole());
 
         ResponseEntity<Void> response = testRestTemplate.postForEntity(
-                BASE_URL+"/registrar", usuario, Void.class);
+                BASE_URL+"/registrar", RegistrarDTO, Void.class);
 
         Assertions.assertThat(response.getStatusCode())
                 .isEqualTo(HttpStatus.BAD_REQUEST);
