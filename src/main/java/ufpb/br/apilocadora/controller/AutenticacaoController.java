@@ -2,51 +2,32 @@ package ufpb.br.apilocadora.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ufpb.br.apilocadora.dto.autenticacao.RegistrarDTO;
-import ufpb.br.apilocadora.domain.Usuario;
 import ufpb.br.apilocadora.dto.autenticacao.AuthenticationDTO;
 import ufpb.br.apilocadora.dto.autenticacao.LoginResponseDTO;
-import ufpb.br.apilocadora.repository.UsuarioRepository;
-import ufpb.br.apilocadora.security.TokenService;
+import ufpb.br.apilocadora.dto.autenticacao.RegistrarDTO;
+import ufpb.br.apilocadora.service.AuthorizationService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AutenticacaoController {
+
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UsuarioRepository repository;
-    @Autowired
-    private TokenService tokenService;
+    private AuthorizationService authorizationService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data){
-        UsernamePasswordAuthenticationToken usernamePassword =
-                new UsernamePasswordAuthenticationToken(data.getEmail(), data.getPassword());
+    @ResponseStatus(HttpStatus.OK)
+    public LoginResponseDTO login(@RequestBody @Valid AuthenticationDTO authenticationDTO){
 
-        Authentication auth = this.authenticationManager.authenticate(usernamePassword);
-
-        String token = tokenService.generateToken((Usuario) auth.getPrincipal());
-
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return authorizationService.logar(authenticationDTO);
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<Void> registrar(@RequestBody @Valid RegistrarDTO data){
-        if(this.repository.findByEmail(data.getEmail()) != null) return ResponseEntity.badRequest().build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registrar(@RequestBody @Valid RegistrarDTO RegistrarDTO){
 
-        String senhaEncriptada = new BCryptPasswordEncoder().encode(data.getPassword());
-        Usuario newUsuario = new Usuario(data.getEmail(), senhaEncriptada, data.getNome(), data.getRole());
-
-        this.repository.save(newUsuario);
-
-        return ResponseEntity.ok().build();
+        authorizationService.save(RegistrarDTO);
     }
 }
