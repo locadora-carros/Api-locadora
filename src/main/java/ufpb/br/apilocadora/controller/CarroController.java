@@ -17,15 +17,14 @@ public class CarroController {
     @Autowired
     private CarroService carroService;
 
-    @GetMapping("/chassi")
-    public ResponseEntity<CarroDTO> getCarroByChassi (
-            @RequestParam(value = "value") String chassi) {
+    @GetMapping("/{chassi}")
+    public ResponseEntity<CarroDTO> findCarroByChassi (@PathVariable String chassi) {
 
         return ResponseEntity.ok().body(carroService.findByChassi(chassi));
     }
 
     @GetMapping()
-    public ResponseEntity<Page<CarroInfoSimplesDTO>> getAllCarros(
+    public ResponseEntity<Page<CarroInfoSimplesDTO>> findAllCarros(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "pageSize", defaultValue = "24") Integer pageSize) {
 
@@ -33,7 +32,7 @@ public class CarroController {
     }
 
     @GetMapping("/nome")
-    public ResponseEntity<Page<CarroDTO>> getAllByNome(
+    public ResponseEntity<Page<CarroDTO>> findAllByNome(
             @RequestParam(value = "value") String nome,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "pageSize", defaultValue = "24") Integer pageSize) {
@@ -43,14 +42,13 @@ public class CarroController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveCarro(
-                          @RequestBody CarroDTO carroDTO) {
+    public void saveCarro(@RequestBody CarroDTO carroDTO) {
 
         carroService.save( carroDTO);
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCarro(@RequestParam(value = "chassi") String chassi,
                             @RequestBody CarroDTO carroDTO){
         carroService.update(chassi, carroDTO);

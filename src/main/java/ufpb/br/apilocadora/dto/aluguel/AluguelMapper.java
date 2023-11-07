@@ -10,7 +10,7 @@ public class AluguelMapper {
 
     public AluguelDTO toDto(Aluguel aluguel) {
         AluguelDTO aluguelDTO = new AluguelDTO();
-        aluguelDTO.setIniciaAluguel(aluguel.getIniciaAluguel());
+        aluguelDTO.setInicioAluguel(aluguel.getInicioAluguel());
         aluguelDTO.setFimAluguel(aluguel.getFimAluguel());
         aluguelDTO.setFormaPagamento(aluguel.getFormaPagamento());
         aluguelDTO.setValor(aluguel.getValor());
@@ -20,7 +20,7 @@ public class AluguelMapper {
     
     public Aluguel toEntity(AluguelDTO aluguelDTO, Carro carro, Usuario usuario) {
         Aluguel aluguel = new Aluguel();
-        aluguel.setIniciaAluguel(aluguelDTO.getIniciaAluguel());
+        aluguel.setInicioAluguel(aluguelDTO.getInicioAluguel());
         aluguel.setFimAluguel(aluguelDTO.getFimAluguel());
         aluguel.setFormaPagamento(aluguelDTO.getFormaPagamento());
         aluguel.setValor(aluguelDTO.getValor());

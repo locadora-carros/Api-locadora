@@ -25,8 +25,31 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
+
     @Autowired
     SecurityFilter securityFilter;
+
+    private static final String[] PUBLIC_MATCHERS_GET = {
+            "/api/alugueis",
+            "/api/alugueis/**",
+            "/api/carros",
+            "/api/carros/**",
+    };
+
+    private static final String[] PUBLIC_MATCHERS_POST = {
+            "/api/alugueis",
+            "/api/carros"
+    };
+
+    private static final String[] PUBLIC_MATCHERS_PUT = {
+            "/api/alugueis",
+            "/api/carros"
+    };
+
+    private static final String[] PUBLIC_MATCHERS_DELETE = {
+            "/api/alugueis",
+            "/api/carros"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -37,15 +60,15 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/v3/api-docs", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/carros").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/alugueis").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+                        .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, PUBLIC_MATCHERS_PUT).hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, PUBLIC_MATCHERS_DELETE).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
