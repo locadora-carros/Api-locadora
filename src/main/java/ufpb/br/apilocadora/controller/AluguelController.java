@@ -38,7 +38,7 @@ public class AluguelController {
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAluguel(@RequestParam(value = "value") String id,
                               @RequestBody AluguelDTO aluguelDTO){
 

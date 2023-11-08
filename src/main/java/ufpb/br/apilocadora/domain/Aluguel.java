@@ -18,7 +18,7 @@ public class Aluguel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime iniciaAluguel;
+    private LocalDateTime inicioAluguel;
 
     private LocalDateTime fimAluguel;
 
